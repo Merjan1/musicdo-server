@@ -14,11 +14,11 @@ app.use(express.json());
 app.use(cors({ origin: process.env.REACT_APP_URL }));
 require("./config/passport.config")(app);
 
-// const CONNECTION_URL =
-//   "mongodb+srv://musicdo:ironhack.musicdo@cluster0.yvrwc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const CONNECTION_URL =
+  "mongodb+srv://musicdo:ironhack.musicdo@cluster0.yvrwc.mongodb.net/myFirstDatabase?retryWrites=true";
 
 const postsRouter = require("./routes/posts.routes");
-app.use("/posts", postsRouter);
+app.use("/", postsRouter);
 
 const userRouter = require("./routes/user.routes");
 app.use("/api", userRouter);
