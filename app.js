@@ -18,7 +18,7 @@ const CONNECTION_URL =
   "mongodb+srv://musicdo:ironhack.musicdo@cluster0.yvrwc.mongodb.net/myFirstDatabase?retryWrites=true";
 
 const postsRouter = require("./routes/posts.routes");
-app.use("/", postsRouter);
+app.use("/posts", postsRouter);
 
 const userRouter = require("./routes/user.routes");
 app.use("/api", userRouter);
