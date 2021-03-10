@@ -47,4 +47,23 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
+//cruD = Delete
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedPost = await PostMessage.findByIdAndRemove({
+      _id: req.params.id,
+    });
+
+    if (!deletedPost) {
+      return res.status(404).json({ msg: "Post not found!" });
+    }
+
+    return res
+      .status(200)
+      .json({ msg: "You've deleted your post successfully!" });
+  } catch (err) {
+    return res.status(500).json({ msg: err });
+  }
+});
+
 module.exports = router;
