@@ -47,6 +47,26 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
+router.patch("/:id/likePost", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const post = await PostMessage.findById(id);
+
+    const updatedPost = await PostMessage.findByIdAndUpdate(
+      {
+        _id: id,
+      },
+      { likeCount: post.likeCount + 1 },
+      { new: true }
+    );
+
+    return res.status(200).json(updatedPost);
+  } catch (err) {
+    return res.status(500).json({ msg: err });
+  }
+});
+
 //cruD = Delete
 router.delete("/:id", async (req, res) => {
   try {
