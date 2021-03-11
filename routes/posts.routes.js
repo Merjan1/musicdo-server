@@ -1,10 +1,11 @@
 const router = require("express").Router();
 
 const { Mongoose } = require("mongoose");
+const authMiddleware = require("../middleware/auth.middleware");
 const PostMessage = require("../models/postMessage");
 
 //Crud = Create
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   try {
     const newPost = await PostMessage.create(req.body);
 
@@ -18,7 +19,6 @@ router.post("/", async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const postMessages = await PostMessage.find();
-    console.log(postMessages);
 
     return res.status(200).json(postMessages);
   } catch (err) {
@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
 });
 
 //crUd = Update
-router.patch("/:id", async (req, res) => {
+router.patch("/:id", authMiddleware, async (req, res) => {
   try {
     const updatedPost = await PostMessage.findOneAndUpdate(
       {
@@ -47,17 +47,27 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.patch("/:id/likePost", async (req, res) => {
+router.patch("/:id/likePost", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
 
+    if (!req.userId) return res.json({ msg: "Unauthenticaded" });
+
     const post = await PostMessage.findById(id);
+
+    const index = post.likes.findIndex((id) => id === String(req.userId));
+
+    if (index === -1) {
+      post.likes.push(req.userId);
+    } else {
+      post.likes = post.likes.filter((id) => id !== String(req.userId));
+    }
 
     const updatedPost = await PostMessage.findByIdAndUpdate(
       {
         _id: id,
       },
-      { likeCount: post.likeCount + 1 },
+      post,
       { new: true }
     );
 
@@ -68,7 +78,7 @@ router.patch("/:id/likePost", async (req, res) => {
 });
 
 //cruD = Delete
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const deletedPost = await PostMessage.findByIdAndRemove({
       _id: req.params.id,

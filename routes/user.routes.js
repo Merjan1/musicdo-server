@@ -15,15 +15,15 @@ const User = require("../models/User");
 router.post("/signup", async (req, res) => {
   // 1. Extrair o email, nome e senha do usuario do corpo da requisição
 
-  const { name, email, password } = req.body;
+  const { email, password, confirmPassword, firstName, lastName } = req.body;
 
   // 2. Validar o email e a senha
 
   const errors = {};
   // Validacao de nome de usuario: é obrigatório, tem que ser do tipo string e não pode ter mais de 50 caracteres
-  if (!name || typeof name !== "string" || name.length > 50) {
-    errors.name = "Username is required and should be 50 characters max.";
-  }
+  // if (!name || typeof name !== "string" || name.length > 50) {
+  //   errors.name = "Username is required and should be 50 characters max.";
+  // }
 
   // Tem que ser um email valido, é obrigatório
   if (!email || !email.match(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/)) {
@@ -39,6 +39,10 @@ router.post("/signup", async (req, res) => {
   ) {
     errors.password =
       "Password is required, should be at least 8 characters long, should contain an uppercase letter, lowercase letter, a number and a special character";
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({ msg: "Passwords don't match!" });
   }
 
   // Se o objeto errors tiver propriedades (chaves), retorne as mensagens de erro
@@ -58,9 +62,11 @@ router.post("/signup", async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
 
     // 4. Salvar o email e a senha criptografada no banco
-    const result = await User.create({ email, name, passwordHash });
-
-    console.log(result);
+    const result = await User.create({
+      email,
+      name: `${firstName} ${lastName}`,
+      passwordHash,
+    });
 
     return res.status(201).json(result);
   } catch (err) {
@@ -110,8 +116,6 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      console.log(req.user);
-
       const result = await User.findOne({ _id: req.user._id });
 
       res

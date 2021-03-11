@@ -21,7 +21,7 @@ const postsRouter = require("./routes/posts.routes");
 app.use("/posts", postsRouter);
 
 const userRouter = require("./routes/user.routes");
-app.use("/api", userRouter);
+app.use("/login", userRouter);
 
 app.listen(Number(process.env.PORT), () =>
   console.log(`Server up and running at port ${process.env.PORT}`)
