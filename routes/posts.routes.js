@@ -88,6 +88,8 @@ router.delete("/:id", authMiddleware, async (req, res) => {
 
     const post = await PostMessage.findById(id);
 
+    console.log(post);
+
     if (req.userId !== post.owner) {
       return res.status(403).json({ msg: "Forbidden" });
     }
