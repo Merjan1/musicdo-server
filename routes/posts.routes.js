@@ -4,17 +4,6 @@ const { Mongoose } = require("mongoose");
 const authMiddleware = require("../middleware/auth.middleware");
 const PostMessage = require("../models/postMessage");
 
-//Crud = Create
-router.post("/", authMiddleware, async (req, res) => {
-  try {
-    const newPost = await PostMessage.create(req.body);
-
-    return res.status(201).json(newPost);
-  } catch (err) {
-    return res.status(500).json({ msg: err });
-  }
-});
-
 //cRud = Read
 router.get("/", async (req, res) => {
   try {
@@ -47,6 +36,17 @@ router.patch("/:id", authMiddleware, async (req, res) => {
   }
 });
 
+//Crud = Create
+router.post("/", authMiddleware, async (req, res) => {
+  try {
+    const newPost = await PostMessage.create(req.body);
+
+    return res.status(201).json(newPost);
+  } catch (err) {
+    return res.status(500).json({ msg: err });
+  }
+});
+
 router.patch("/:id/likePost", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
@@ -55,12 +55,14 @@ router.patch("/:id/likePost", authMiddleware, async (req, res) => {
 
     const post = await PostMessage.findById(id);
 
-    const index = post.likes.findIndex((id) => id === String(req.userId));
+    const index = post.likes.findIndex(
+      (userId) => userId === String(req.userId)
+    );
 
     if (index === -1) {
       post.likes.push(req.userId);
     } else {
-      post.likes = post.likes.filter((id) => id !== String(req.userId));
+      post.likes = post.likes.filter((userId) => userId !== String(req.userId));
     }
 
     const updatedPost = await PostMessage.findByIdAndUpdate(
