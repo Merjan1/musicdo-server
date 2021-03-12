@@ -11,6 +11,7 @@ const postSchema = mongoose.Schema({
     type: Date,
     default: new Date(),
   },
+  owner: String, //{ type: mongoose.Schema.Types.ObjectId, ref: "User" }
 });
 
 const PostMessage = mongoose.model("PostMessage", postSchema);

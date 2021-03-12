@@ -4,6 +4,17 @@ const { Mongoose } = require("mongoose");
 const authMiddleware = require("../middleware/auth.middleware");
 const PostMessage = require("../models/postMessage");
 
+//Crud = Create
+router.post("/", authMiddleware, async (req, res) => {
+  try {
+    const newPost = await PostMessage.create(req.body);
+
+    return res.status(201).json(newPost);
+  } catch (err) {
+    return res.status(500).json({ msg: err });
+  }
+});
+
 //cRud = Read
 router.get("/", async (req, res) => {
   try {
@@ -31,17 +42,6 @@ router.patch("/:id", authMiddleware, async (req, res) => {
     }
 
     return res.status(200).json(updatedPost);
-  } catch (err) {
-    return res.status(500).json({ msg: err });
-  }
-});
-
-//Crud = Create
-router.post("/", authMiddleware, async (req, res) => {
-  try {
-    const newPost = await PostMessage.create(req.body);
-
-    return res.status(201).json(newPost);
   } catch (err) {
     return res.status(500).json({ msg: err });
   }
@@ -82,8 +82,18 @@ router.patch("/:id/likePost", authMiddleware, async (req, res) => {
 //cruD = Delete
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
+    const { id } = req.params;
+
+    // if (!req.userId) return res.json({ msg: "Unauthenticaded" });
+
+    const post = await PostMessage.findById(id);
+
+    if (req.userId !== post.owner) {
+      return res.status(403).json({ msg: "Forbidden" });
+    }
+
     const deletedPost = await PostMessage.findByIdAndRemove({
-      _id: req.params.id,
+      _id: id,
     });
 
     if (!deletedPost) {
