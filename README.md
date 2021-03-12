@@ -1,53 +1,16 @@
-![logo_ironhack_blue 7](https://user-images.githubusercontent.com/23629340/40541063-a07a0a8a-601a-11e8-91b5-2f13e4e6b441.png)
+!# MusicDo
+MusicDo is a MERN application that works as a online board to make musicians e-meet!
 
-# IronREST Boilerplate
+Click [HERE](https://github.com/Merjan1/musicdo-client) to go to the frontend github page and test it!!
 
-Esse boilerplate para API RESTful já inclui:
+Link to the presentation [HERE](https://docs.google.com/presentation/d/17tjLnyyKJEKoUA-IG8FzzPbNXLWgpmnqRN6HU_zQ6fM/edit?usp=sharing)
 
-- Autenticação por tokens JWT usando o Passport
-- Conexão com banco de dados MongoDB usando Mongoose
-- Servidor Web usando Express pré-configurado com CORS e aceitando requisições JSON e Multipart Form
-- Upload de arquivos usando Cloudinary e Multer
+## Using the app
 
-## Para Começar
+- Open the demo link & creat an account or log-in with google accounts
+- Create posts & share content!
+- Profit!
 
-- Faça o fork e clone deste repositório
+## ABOUT THE APP
 
-## Instalação
-
-```shell
-$ npm install
-```
-
-## Desenvolvimento
-
-Para iniciar o servidor web localmente execute no seu terminal:
-
-```shell
-$ npm run dev
-```
-
-## Deploy do MongoDB
-
-1. Faça login no https://account.mongodb.com/account/login?nds=true
-2. Crie um cluster gratuito
-3. Siga as instruções e obtenha a string de conexão com o banco
-4. Crie uma variável de ambiente MONGODB_URI no Heroku com a string de conexão copiada do Atlas
-
-## Deploy no Heroku
-
-1. Faça login no Heroku e selecione seu repositório
-2. Habilite 'automatic deploys'
-3. No seu terminal, execute os seguintes comandos:
-
-```shell
-$ git add .
-$ git commit -m 'deploying'
-$ heroku git:remote -a nome-do-repo-no-heroku
-$ git push heroku master
-```
-
-4. Adicione uma variável de ambiente no Heroku para cada variável de ambiente presente no arquivo .env (não precisa criar a PORT no Heroku)
-5. Adicione a URL da sua API hospedada no Heroku nas variáveis de ambiente do app React no Netlify
-
-Happy coding! 💙
+This app as a MERN project created with the intuit of applying the Ironhack content to a real working application
